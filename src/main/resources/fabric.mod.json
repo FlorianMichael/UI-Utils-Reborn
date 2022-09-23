@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "ui-utils-reborn",
+  "version": "${version}",
+
+  "name": "UI-Utils-Reborn",
+  "description": "Dupe Hunting Mod",
+  "authors": ["FlorianMichael"],
+  "contact": {
+    "sources": "https://github.com/FlorianMichael/UI-Utils-Reborn"
+  },
+  "entrypoints": {
+    "client": ["de.florianmichael.uiutilsreborn.UIUtils"]
+  },
+  "mixins": ["ui-utils-reborn.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

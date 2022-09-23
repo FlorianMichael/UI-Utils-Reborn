@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.florianmichael.uiutilsreborn.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "ClientConnectionMixin",
+    "ScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
