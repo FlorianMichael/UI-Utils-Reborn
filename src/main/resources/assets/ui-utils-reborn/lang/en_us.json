@@ -1,0 +1,19 @@
+{
+  "gui.ui-utils-reborn.client-side-close": "Close without Packet",
+  "gui.ui-utils-reborn.client-wake-up": "Client wakeup",
+  "gui.ui-utils-reborn.server-side-close": "Desync",
+  "gui.ui-utils-reborn.force-respawn": "Anti-Respawn Potion Fix",
+  "gui.ui-utils-reborn.send-packets": "Send Packets",
+  "gui.ui-utils-reborn.delay-packets": "Delay Packets",
+  "gui.ui-utils-reborn.save": "Save GUI",
+  "gui.ui-utils-reborn.load": "Load saved GUI",
+  "gui.ui-utils-reborn.disconnect": "Send and quit",
+
+  "gui.ui-utils-reborn.sid": "Copy Sync-ID",
+  "gui.ui-utils-reborn.rev": "Copy Revision",
+  "gui.ui-utils-reborn.fabricate": "Fabricate Packet",
+
+  "fabricate.ui-utils-reborn.send": "Send Packet",
+  "fabricate.ui-utils-reborn.invalid": "Invalid parameters!",
+  "fabricate.ui-utils-reborn.success": "Sent successfully!"
+}
