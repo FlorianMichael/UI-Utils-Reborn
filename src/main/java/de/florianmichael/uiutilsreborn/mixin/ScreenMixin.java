@@ -10,6 +10,7 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,10 +19,11 @@ import java.util.List;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin {
+    @Shadow(aliases = {"method_37063", "m_142416_"})
+    protected abstract <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement);
 
-    @Shadow protected abstract <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement);
-
-    @Shadow public int width;
+    @Shadow
+    public int width;
 
     @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;II)V", at = @At("RETURN"))
     public void hookFeatureButtons(MinecraftClient client, int width, int height, CallbackInfo ci) {
