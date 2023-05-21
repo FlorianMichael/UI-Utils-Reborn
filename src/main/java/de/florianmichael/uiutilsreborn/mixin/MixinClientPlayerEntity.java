@@ -19,19 +19,17 @@
 package de.florianmichael.uiutilsreborn.mixin;
 
 import de.florianmichael.uiutilsreborn.UIUtilsReborn;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.PacketCallbacks;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientConnection.class)
-public class ClientConnectionMixin {
+@Mixin(ClientPlayerEntity.class)
+public class MixinClientPlayerEntity {
 
-    @Inject(method = "sendImmediately", at = @At("HEAD"), cancellable = true)
-    public void hookExploitCancels(Packet<?> packet, PacketCallbacks callbacks, CallbackInfo ci) {
-        if (UIUtilsReborn.shouldCancel(packet)) ci.cancel();
+    @Inject(method = "tick", at = @At("RETURN"))
+    public void tickShulkerDupe(CallbackInfo ci) {
+        UIUtilsReborn.tickShulkerDupe();
     }
 }

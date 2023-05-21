@@ -33,13 +33,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TextFieldWidget.class)
-public abstract class TextFieldWidgetMixin extends ClickableWidget implements ITextFieldAdapter {
+public abstract class MixinTextFieldWidget extends ClickableWidget implements ITextFieldAdapter {
 
     @Shadow @Final private TextRenderer textRenderer;
     @Unique
     private Text sideInformation;
 
-    public TextFieldWidgetMixin(int x, int y, int width, int height, Text message) {
+    public MixinTextFieldWidget(int x, int y, int width, int height, Text message) {
         super(x, y, width, height, message);
     }
 

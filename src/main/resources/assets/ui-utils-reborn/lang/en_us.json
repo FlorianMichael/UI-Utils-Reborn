@@ -3,7 +3,7 @@
   "gui.ui-utils-reborn.client-wake-up": "Client wakeup",
   "gui.ui-utils-reborn.server-side-close": "Desync",
   "gui.ui-utils-reborn.force-respawn": "Anti-Respawn Potion Fix",
-  "gui.ui-utils-reborn.send-packets": "Send Packets",
+  "gui.ui-utils-reborn.cancel-packets": "Cancel Packets",
   "gui.ui-utils-reborn.delay-packets": "Delay Packets",
   "gui.ui-utils-reborn.save": "Save GUI",
   "gui.ui-utils-reborn.load": "Load saved GUI",

@@ -4,14 +4,13 @@
   "package": "de.florianmichael.uiutilsreborn.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "ChatScreenMixin",
-    "ClientConnectionMixin",
-    "ScreenMixin"
+    "MixinChatScreen",
+    "MixinClientConnection",
+    "MixinClientPlayerEntity",
+    "MixinScreen",
+    "MixinTextFieldWidget"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "TextFieldWidgetMixin"
-  ]
+  }
 }

@@ -10,12 +10,12 @@ If you just want to talk or need help with UI-Utils-Reborn feel free to join my
 ## Features
 
 Cleaned up rewrite from https://github.com/Coderx-Gamer/ui-utils <br>
-More Features:
+Differences between the original and this one:
 - Multi-Language Support
 - Better Design and Code-base
 - AntiRespawn Fix
 - Removed Restore Key and added new Button
-- Recoded 
+- Included [shulker-dupe](https://github.com/Coderx-Gamer/shulker-dupe) and [lectern-crash](https://github.com/Coderx-Gamer/lectern-crash)
 
 ## Tutorial
 You can type `$ui-utils-reborn` into the chat to disable/enable the GUI stuff
