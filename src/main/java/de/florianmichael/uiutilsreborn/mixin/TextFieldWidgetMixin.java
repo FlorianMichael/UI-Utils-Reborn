@@ -1,3 +1,21 @@
+/*
+ * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
+ * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.florianmichael.uiutilsreborn.mixin;
 
 import de.florianmichael.uiutilsreborn.util.ITextFieldAdapter;
@@ -28,7 +46,7 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget implements IT
     @Inject(method = "renderButton", at = @At("RETURN"))
     public void hookCustomSideInformation(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.sideInformation != null)
-            this.textRenderer.drawWithShadow(matrices, this.sideInformation, this.x - textRenderer.getWidth(this.sideInformation.getString()) - 10, this.y + this.getHeight() / 4F, -1);
+            this.textRenderer.drawWithShadow(matrices, this.sideInformation, this.getX() - textRenderer.getWidth(this.sideInformation.getString()) - 10, this.getY() + this.getHeight() / 4F, -1);
     }
 
     @Override

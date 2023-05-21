@@ -1,3 +1,21 @@
+/*
+ * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
+ * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.florianmichael.uiutilsreborn;
 
 import de.florianmichael.uiutilsreborn.gui.FabricateScreen;
@@ -12,7 +30,7 @@ import net.minecraft.client.gui.screen.SleepingChatScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.LecternScreen;
 import net.minecraft.client.gui.screen.ingame.SignEditScreen;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
@@ -22,13 +40,14 @@ import net.minecraft.text.Text;
 
 import java.util.*;
 
-public class UIUtils implements ClientModInitializer {
+public class UIUtilsReborn implements ClientModInitializer {
+    public static boolean enabled = true;
 
-    public static final int BOUND = 5;
-    public static final int BUTTON_DIFF = 20 + 4;
+    public final static int BOUND = 5;
+    public final static int BUTTON_DIFF = ExploitButtonWidget.DEFAULT_HEIGHT + 3;
 
     private final static Map<Class<? extends Screen>, List<ExploitButtonWidget>> exploitTracker = new HashMap<>();
-    private static final List<Packet<?>> delayedUIPackets = new ArrayList<>();
+    private final static List<Packet<?>> delayedUIPackets = new ArrayList<>();
 
     private static boolean cancelSignPackets;
 
@@ -52,7 +71,7 @@ public class UIUtils implements ClientModInitializer {
         hookFeature(SignEditScreen.class, new ExploitButtonWidget("client-side-close", Side.LEFT, (b) -> {
             mc.setScreen(null);
 
-            UIUtils.cancelSignPackets = true;
+            UIUtilsReborn.cancelSignPackets = true;
         }));
         hookFeature(DeathScreen.class, new ExploitButtonWidget("force-respawn", Side.LEFT, b -> {
             assert mc.player != null;
@@ -70,7 +89,7 @@ public class UIUtils implements ClientModInitializer {
 
             Objects.requireNonNull(mc.getNetworkHandler()).sendPacket(new CloseHandledScreenC2SPacket(mc.player.currentScreenHandler.syncId));
         }));
-        exploits.add(new ToggleableExploitButtonWidget("send-packets", Side.LEFT, button -> shouldSendUIPackets = !shouldSendUIPackets));
+        exploits.add(new ToggleableExploitButtonWidget("send-packets", Side.LEFT, button -> shouldSendUIPackets = !shouldSendUIPackets, shouldSendUIPackets));
         exploits.add(new ToggleableExploitButtonWidget("delay-packets", Side.LEFT, button -> {
             if (!shouldDelayUIPackets && !delayedUIPackets.isEmpty()) {
                 for (Packet<?> packet : delayedUIPackets)
@@ -78,7 +97,7 @@ public class UIUtils implements ClientModInitializer {
 
                 delayedUIPackets.clear();
             }
-        }));
+        }, shouldDelayUIPackets));
         exploits.add(new ExploitButtonWidget("disconnect", Side.LEFT, button -> {
             if (!delayedUIPackets.isEmpty()) {
                 shouldDelayUIPackets = false;
@@ -113,13 +132,14 @@ public class UIUtils implements ClientModInitializer {
         exploits.add(new ExploitButtonWidget("sid", Side.RIGHT, b -> {
             assert mc.player != null;
 
-            mc.keyboard.setClipboard(mc.player.currentScreenHandler.syncId + "");
+            mc.keyboard.setClipboard(String.valueOf(mc.player.currentScreenHandler.syncId));
         }));
         exploits.add(new ExploitButtonWidget("rev", Side.RIGHT, b -> {
             assert mc.player != null;
 
-            mc.keyboard.setClipboard(mc.player.currentScreenHandler.getRevision() + "");
+            mc.keyboard.setClipboard(String.valueOf(mc.player.currentScreenHandler.getRevision()));
         }));
+        exploits.add(new ExploitButtonWidget("title", Side.RIGHT, b -> MinecraftClient.getInstance().keyboard.setClipboard(Text.Serializer.toJson(mc.currentScreen.getTitle()))));
 
         // Packet Fabrication
         exploits.add(new ExploitButtonWidget("fabricate", Side.RIGHT, b -> mc.setScreen(new FabricateScreen(mc.currentScreen))));
@@ -137,7 +157,7 @@ public class UIUtils implements ClientModInitializer {
             return true;
         }
 
-        if (shouldSendUIPackets && (packet instanceof ClickSlotC2SPacket || packet instanceof ButtonClickC2SPacket))
+        if (!shouldSendUIPackets && (packet instanceof ClickSlotC2SPacket || packet instanceof ButtonClickC2SPacket))
             return true;
 
         if (shouldDelayUIPackets && (packet instanceof ClickSlotC2SPacket || packet instanceof ButtonClickC2SPacket)) {

@@ -19,19 +19,28 @@
 package de.florianmichael.uiutilsreborn.mixin;
 
 import de.florianmichael.uiutilsreborn.UIUtilsReborn;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.PacketCallbacks;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientConnection.class)
-public class ClientConnectionMixin {
+@Mixin(ChatScreen.class)
+public class ChatScreenMixin {
 
-    @Inject(method = "sendImmediately", at = @At("HEAD"), cancellable = true)
-    public void hookExploitCancels(Packet<?> packet, PacketCallbacks callbacks, CallbackInfo ci) {
-        if (UIUtilsReborn.shouldCancel(packet)) ci.cancel();
+    @Inject(at = @At("HEAD"), method = "sendMessage", cancellable = true)
+    public void hookToggleCommand(String chatText, boolean addToHistory, CallbackInfoReturnable<Boolean> cir) {
+        if (chatText.equals("$ui-utils-reborn")) {
+            UIUtilsReborn.enabled = !UIUtilsReborn.enabled;
+
+            assert MinecraftClient.getInstance().player != null;
+            MinecraftClient.getInstance().player.sendMessage(Text.of((UIUtilsReborn.enabled ? Formatting.GREEN : Formatting.RED) + "UI-Utils-Reborn is now " + (UIUtilsReborn.enabled ? "enabled" : "disabled")));
+            MinecraftClient.getInstance().inGameHud.getChatHud().addToMessageHistory(chatText);
+
+            cir.setReturnValue(true);
+        }
     }
 }

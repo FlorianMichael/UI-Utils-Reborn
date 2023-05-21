@@ -11,6 +11,7 @@
 
   "gui.ui-utils-reborn.sid": "Copy Sync-ID",
   "gui.ui-utils-reborn.rev": "Copy Revision",
+  "gui.ui-utils-reborn.title": "Copy Title (Json)",
   "gui.ui-utils-reborn.fabricate": "Fabricate Packet",
 
   "fabricate.ui-utils-reborn.send": "Send Packet",

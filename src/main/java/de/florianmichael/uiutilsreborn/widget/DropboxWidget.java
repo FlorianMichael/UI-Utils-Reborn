@@ -1,3 +1,21 @@
+/*
+ * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
+ * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.florianmichael.uiutilsreborn.widget;
 
 import net.minecraft.client.MinecraftClient;
@@ -71,7 +89,7 @@ public class DropboxWidget extends DrawableHelper {
         MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, text, (this.x + this.width) - MinecraftClient.getInstance().textRenderer.getWidth(text), this.y + (this.height / 2F) - 4, -1);
         drawRectBorder(matrices, this.x, this.y, this.x + this.width, this.y + this.height);
 
-        drawCenteredText(matrices, MinecraftClient.getInstance().textRenderer, Text.literal(this.options.get(this.selected)), this.x + (this.width / 2), this.y + (this.height / 2) - 4, -1);
+        drawCenteredTextWithShadow(matrices, MinecraftClient.getInstance().textRenderer, Text.literal(this.options.get(this.selected)), this.x + (this.width / 2), this.y + (this.height / 2) - 4, -1);
 
         if (this.isOpen()) {
             DrawableHelper.fill(matrices, this.x, this.y + this.height, this.x + this.width, this.y + this.height + (this.options.size() * this.entryHeight), Color.BLACK.getRGB());
@@ -79,7 +97,7 @@ public class DropboxWidget extends DrawableHelper {
 
             int bypass = this.height;
             for (String option : this.options) {
-                drawCenteredText(matrices, MinecraftClient.getInstance().textRenderer, Text.literal(option), this.x + this.width / 2, bypass + this.y + 1 + (this.entryHeight / 4), -1);
+                drawCenteredTextWithShadow(matrices, MinecraftClient.getInstance().textRenderer, Text.literal(option), this.x + this.width / 2, bypass + this.y + 1 + (this.entryHeight / 4), -1);
                 bypass += this.entryHeight;
             }
         }

@@ -1,6 +1,24 @@
+/*
+ * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
+ * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.florianmichael.uiutilsreborn.gui;
 
-import de.florianmichael.uiutilsreborn.UIUtils;
+import de.florianmichael.uiutilsreborn.UIUtilsReborn;
 import de.florianmichael.uiutilsreborn.util.ITextFieldAdapter;
 import de.florianmichael.uiutilsreborn.widget.DropboxWidget;
 import de.florianmichael.uiutilsreborn.widget.ExploitButtonWidget;
@@ -22,8 +40,8 @@ import java.util.Arrays;
 
 public class FabricateScreen extends Screen {
 
-    private static final int DEFAULT_WIDTH = 300;
-    private static final int DEFAULT_HEIGHT = 15;
+    private final static int DEFAULT_WIDTH = 300;
+    private final static int DEFAULT_HEIGHT = 15;
 
     private final Screen parent;
     private CurrentPacket currentPacket = CurrentPacket.CLICK_SLOT;
@@ -53,7 +71,7 @@ public class FabricateScreen extends Screen {
         super.init();
         final int startX = this.width / 2 - (DEFAULT_WIDTH / 2);
 
-        this.addDrawableChild(new ButtonWidget(UIUtils.BOUND, this.height - ExploitButtonWidget.DEFAULT_HEIGHT - UIUtils.BOUND, 98, ExploitButtonWidget.DEFAULT_HEIGHT, Text.literal(
+        this.addDrawableChild(ButtonWidget.builder(Text.literal(
                 this.currentPacket.getDisplay()
         ), button -> {
             if (this.currentPacket == CurrentPacket.CLICK_SLOT)
@@ -65,11 +83,11 @@ public class FabricateScreen extends Screen {
             this.init();
 
             button.setMessage(Text.literal(this.currentPacket.getDisplay()));
-        }));
+        }).dimensions(UIUtilsReborn.BOUND, this.height - ExploitButtonWidget.DEFAULT_HEIGHT - UIUtilsReborn.BOUND, 98, ExploitButtonWidget.DEFAULT_HEIGHT).build());
 
         this.initButtons(startX);
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - (DEFAULT_WIDTH / 4), this.height - ExploitButtonWidget.DEFAULT_HEIGHT - UIUtils.BOUND, DEFAULT_WIDTH / 2, ExploitButtonWidget.DEFAULT_HEIGHT, Text.translatable("fabricate.ui-utils-reborn.send"), button1 -> {
+        this.addDrawableChild(ButtonWidget.builder(Text.translatable("fabricate.ui-utils-reborn.send"), button1 -> {
             if (this.currentPacket == CurrentPacket.CLICK_SLOT) {
                 if (this.syncID.getText().trim().isEmpty() || this.revision.getText().trim().isEmpty() || this.slot.getText().trim().isEmpty() || this.button.getText().trim().isEmpty()) {
                     this.status = Formatting.RED + Text.translatable("fabricate.ui-utils-reborn.invalid").getString();
@@ -105,7 +123,7 @@ public class FabricateScreen extends Screen {
                 client.getNetworkHandler().sendPacket(new ButtonClickC2SPacket(syncID, buttonID));
                 this.status = Formatting.GREEN + Text.translatable("fabricate.ui-utils-reborn.success").getString();
             }
-        }));
+        }).dimensions(this.width / 2 - (DEFAULT_WIDTH / 4), this.height - ExploitButtonWidget.DEFAULT_HEIGHT - UIUtilsReborn.BOUND, DEFAULT_WIDTH / 2, ExploitButtonWidget.DEFAULT_HEIGHT).build());
     }
 
     private Integer isInt(final String input) {
@@ -120,23 +138,23 @@ public class FabricateScreen extends Screen {
         int y = 25;
 
         this.syncID = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
-        y += UIUtils.BUTTON_DIFF;
+        y += UIUtilsReborn.BUTTON_DIFF;
         ((ITextFieldAdapter) this.syncID).setSideInformation("Sync ID");
         this.addDrawableChild(this.syncID);
 
         if (this.currentPacket == CurrentPacket.CLICK_SLOT) {
             this.revision = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
-            y += UIUtils.BUTTON_DIFF;
+            y += UIUtilsReborn.BUTTON_DIFF;
             ((ITextFieldAdapter) this.revision).setSideInformation("Revision");
             this.addDrawableChild(this.revision);
 
             this.slot = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
-            y += UIUtils.BUTTON_DIFF;
+            y += UIUtilsReborn.BUTTON_DIFF;
             ((ITextFieldAdapter) this.slot).setSideInformation("Slot");
             this.addDrawableChild(this.slot);
 
             this.button = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
-            y += UIUtils.BUTTON_DIFF;
+            y += UIUtilsReborn.BUTTON_DIFF;
             ((ITextFieldAdapter) this.button).setSideInformation("Button");
             this.addDrawableChild(this.button);
 
