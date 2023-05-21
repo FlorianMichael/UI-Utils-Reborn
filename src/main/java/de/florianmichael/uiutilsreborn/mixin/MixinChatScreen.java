@@ -33,13 +33,8 @@ public class MixinChatScreen {
 
     @Inject(at = @At("HEAD"), method = "sendMessage", cancellable = true)
     public void hookToggleCommand(String chatText, boolean addToHistory, CallbackInfoReturnable<Boolean> cir) {
-        if (chatText.equals("$ui-utils-reborn")) {
-            UIUtilsReborn.enabled = !UIUtilsReborn.enabled;
-
-            assert MinecraftClient.getInstance().player != null;
-            MinecraftClient.getInstance().player.sendMessage(Text.of((UIUtilsReborn.enabled ? Formatting.GREEN : Formatting.RED) + "UI-Utils-Reborn is now " + (UIUtilsReborn.enabled ? "enabled" : "disabled")));
+        if (UIUtilsReborn.handleChatMessages(chatText)) {
             MinecraftClient.getInstance().inGameHud.getChatHud().addToMessageHistory(chatText);
-
             cir.setReturnValue(true);
         }
     }

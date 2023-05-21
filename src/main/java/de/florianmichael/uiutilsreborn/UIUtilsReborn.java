@@ -43,6 +43,7 @@ import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
@@ -51,7 +52,7 @@ import net.minecraft.util.math.Direction;
 import java.util.*;
 
 public class UIUtilsReborn implements ClientModInitializer {
-    public static boolean enabled = true;
+    private static boolean enabled = true;
 
     public final static int BOUND = 5;
     public final static int BUTTON_DIFF = ExploitButtonWidget.DEFAULT_HEIGHT + 3;
@@ -69,6 +70,21 @@ public class UIUtilsReborn implements ClientModInitializer {
 
     private static Screen storedScreen = null;
     private static ScreenHandler storedScreenHandler = null;
+
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
+    public static boolean handleChatMessages(final String chatText) {
+        if (chatText.equals("$ui-utils-reborn")) {
+            UIUtilsReborn.enabled = !UIUtilsReborn.enabled;
+
+            assert MinecraftClient.getInstance().player != null;
+            MinecraftClient.getInstance().player.sendMessage(Text.of((UIUtilsReborn.enabled ? Formatting.GREEN : Formatting.RED) + "UI-Utils-Reborn is now " + (UIUtilsReborn.enabled ? "enabled" : "disabled")));
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void onInitializeClient() {

@@ -45,7 +45,7 @@ public abstract class MixinScreen {
 
     @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;II)V", at = @At("RETURN"))
     public void hookFeatureButtons(MinecraftClient client, int width, int height, CallbackInfo ci) {
-        if (!UIUtilsReborn.enabled) return;
+        if (!UIUtilsReborn.isEnabled()) return;
 
         final List<ExploitButtonWidget> buttons = UIUtilsReborn.fromScreen((Screen) (Object) this);
 
@@ -67,7 +67,7 @@ public abstract class MixinScreen {
 
     @Inject(method = "tick", at = @At("RETURN"))
     public void hideFeatureButtons(CallbackInfo ci) {
-        if (UIUtilsReborn.enabled) return;
+        if (UIUtilsReborn.isEnabled()) return;
 
         for (Element child : children()) {
             if (child instanceof ExploitButtonWidget buttonWidget) {
