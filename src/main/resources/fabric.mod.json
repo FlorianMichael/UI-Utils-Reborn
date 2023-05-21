@@ -13,6 +13,10 @@
     "sources": "https://github.com/FlorianMichael/UI-Utils-Reborn",
     "issues": "https://github.com/FlorianMichael/UI-Utils-Reborn/issues"
   },
+
+  "license": "GPL-v3",
+  "icon": "assets/ui-utils-reborn/icon.png",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "de.florianmichael.uiutilsreborn.UIUtilsReborn"
