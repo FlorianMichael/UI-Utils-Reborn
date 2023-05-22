@@ -60,13 +60,13 @@ public class UIUtilsReborn implements ClientModInitializer {
     private final static List<Pair<ExploitButtonWidget, Class<? extends  Screen>>> exploitTracker = new ArrayList<>();
     private final static List<Packet<?>> delayedUIPackets = new ArrayList<>();
 
-    public static boolean shulkerDupe = false;
-    public static boolean shulkerDupeMulti = false;
+    public static ToggleableExploitButtonWidget shulkerDupe = null;
+    public static ToggleableExploitButtonWidget shulkerDupeMulti = null;
 
     private static boolean cancelSignPackets;
 
-    private static boolean shouldCancelUIPackets = false;
-    private static boolean shouldDelayUIPackets = false;
+    private static ToggleableExploitButtonWidget shouldCancelUIPackets = null;
+    private static ToggleableExploitButtonWidget shouldDelayUIPackets = null;
 
     private static Screen storedScreen = null;
     private static ScreenHandler storedScreenHandler = null;
@@ -118,19 +118,18 @@ public class UIUtilsReborn implements ClientModInitializer {
 
             Objects.requireNonNull(mc.getNetworkHandler()).sendPacket(new CloseHandledScreenC2SPacket(mc.player.currentScreenHandler.syncId));
         }));
-        exploits.add(new ToggleableExploitButtonWidget(Text.translatable("gui.ui-utils-reborn.cancel-packets"), Side.LEFT, button -> shouldCancelUIPackets = !shouldCancelUIPackets, shouldCancelUIPackets));
-        exploits.add(new ToggleableExploitButtonWidget(Text.translatable("gui.ui-utils-reborn.delay-packets"), Side.LEFT, button -> {
-            shouldDelayUIPackets = !shouldDelayUIPackets;
-            if (!shouldDelayUIPackets && !delayedUIPackets.isEmpty()) {
+        exploits.add(shouldCancelUIPackets = new ToggleableExploitButtonWidget(Text.translatable("gui.ui-utils-reborn.cancel-packets"), Side.LEFT, button -> {}, false));
+        exploits.add(shouldDelayUIPackets = new ToggleableExploitButtonWidget(Text.translatable("gui.ui-utils-reborn.delay-packets"), Side.LEFT, button -> {
+            if (!shouldDelayUIPackets.isToggled() && !delayedUIPackets.isEmpty()) {
                 for (Packet<?> packet : delayedUIPackets)
                     Objects.requireNonNull(mc.getNetworkHandler()).sendPacket(packet);
 
                 delayedUIPackets.clear();
             }
-        }, shouldDelayUIPackets));
+        }, false));
         exploits.add(new ExploitButtonWidget(Text.translatable("gui.ui-utils-reborn.disconnect"), Side.LEFT, button -> {
             if (!delayedUIPackets.isEmpty()) {
-                shouldDelayUIPackets = false;
+                if (shouldCancelUIPackets.isToggled()) shouldDelayUIPackets.toggle();
 
                 for (Packet<?> packet : delayedUIPackets)
                     Objects.requireNonNull(mc.getNetworkHandler()).sendPacket(packet);
@@ -210,22 +209,22 @@ public class UIUtilsReborn implements ClientModInitializer {
             connection.send(new ClickSlotC2SPacket(player.currentScreenHandler.syncId, player.currentScreenHandler.getRevision(), 0, 0, SlotActionType.QUICK_MOVE, player.currentScreenHandler.getCursorStack().copy(), int2ObjectMap));
         }));
 
-        hookFeature(ShulkerBoxScreen.class, new ToggleableExploitButtonWidget(Text.of("Shulker Dupe"), Side.RIGHT, b -> shulkerDupe = !shulkerDupe, shulkerDupe));
-//        hookFeature(ShulkerBoxScreen.class, new ToggleableExploitButtonWidget(Text.of("Shulker Dupe (Multi)"), Side.RIGHT, b -> shulkerDupeMulti = !shulkerDupeMulti, shulkerDupeMulti));
+        hookFeature(ShulkerBoxScreen.class, shulkerDupe = new ToggleableExploitButtonWidget(Text.of("Shulker Dupe"), Side.RIGHT, b -> {}, false));
+        hookFeature(ShulkerBoxScreen.class, shulkerDupeMulti = new ToggleableExploitButtonWidget(Text.of("Shulker Dupe (Multi)"), Side.RIGHT, b -> {}, false));
     }
 
     public static void tickShulkerDupe() {
         if (!(MinecraftClient.getInstance().player.currentScreenHandler instanceof ShulkerBoxScreenHandler)) return;
 
-        if (shulkerDupe || shulkerDupeMulti) {
+        if (shulkerDupe.isToggled() || shulkerDupeMulti.isToggled()) {
             if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHitResult) {
                 if (MinecraftClient.getInstance().world.getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof ShulkerBoxBlock) {
                     MinecraftClient.getInstance().interactionManager.updateBlockBreakingProgress(blockHitResult.getBlockPos(), Direction.DOWN);
                 } else {
                     MinecraftClient.getInstance().player.sendMessage(Text.of("You need to have a shulker box screen open and look at a shulker box."));
                     MinecraftClient.getInstance().player.closeHandledScreen();
-                    shulkerDupe = false;
-                    shulkerDupeMulti = false;
+                    shulkerDupe.disable();
+                    shulkerDupeMulti.disable();
                 }
             }
         }
@@ -247,31 +246,33 @@ public class UIUtilsReborn implements ClientModInitializer {
     }
 
     public static boolean shouldCancel(final Packet<?> packet) {
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) return false;
+
+        if (player.currentScreenHandler instanceof ShulkerBoxScreenHandler && packet instanceof PlayerActionC2SPacket) {
+            if (((PlayerActionC2SPacket) packet).getAction() == PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK) {
+                if (shulkerDupe.isToggled()) {
+                    quickMoveItem(0);
+                    shulkerDupe.disable();
+                } else if (shulkerDupeMulti.isToggled()) {
+                    quickMoveAllItems();
+                    shulkerDupeMulti.disable();
+                }
+            }
+        }
+
         if (cancelSignPackets && packet instanceof UpdateSignC2SPacket) {
             cancelSignPackets = false;
             return true;
         }
 
-        if (shouldCancelUIPackets && (packet instanceof ClickSlotC2SPacket || packet instanceof ButtonClickC2SPacket))
+        if (shouldCancelUIPackets.isToggled() && (packet instanceof ClickSlotC2SPacket || packet instanceof ButtonClickC2SPacket))
             return true;
 
-        if (shouldDelayUIPackets && (packet instanceof ClickSlotC2SPacket || packet instanceof ButtonClickC2SPacket)) {
+        if (shouldDelayUIPackets.isToggled() && (packet instanceof ClickSlotC2SPacket || packet instanceof ButtonClickC2SPacket)) {
             delayedUIPackets.add(packet);
             return true;
         }
-
-        if (packet instanceof PlayerActionC2SPacket) {
-            if (((PlayerActionC2SPacket) packet).getAction() == PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK) {
-                if (shulkerDupe) {
-                    quickMoveItem(0);
-                    shulkerDupe = false;
-                } else if (shulkerDupeMulti) {
-                    quickMoveAllItems();
-                    shulkerDupeMulti = false;
-                }
-            }
-        }
-
         return false;
     }
 
