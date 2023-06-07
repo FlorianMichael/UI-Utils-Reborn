@@ -19,14 +19,13 @@
 package de.florianmichael.uiutilsreborn.widget;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 
 import java.awt.*;
 import java.util.List;
 
-public class DropboxWidget extends DrawableHelper {
+public class DropboxWidget {
 
     public final int x;
     public final int y;
@@ -74,30 +73,31 @@ public class DropboxWidget extends DrawableHelper {
     }
 
     // Thank you Lucy
-    private void drawRectBorder(MatrixStack matrices, int left, int top, int right, int bottom) {
-        DrawableHelper.fill(matrices, left - 1, top - 1, left, bottom + 1, -1);
-        DrawableHelper.fill(matrices, right, top - 1, right + 1, bottom + 1, -1);
-        DrawableHelper.fill(matrices, left, top - 1, right, top, -1);
-        DrawableHelper.fill(matrices, left, bottom, right, bottom + 1, -1);
+    private void drawRectBorder(final DrawContext drawContext, int left, int top, int right, int bottom) {
+        drawContext.fill(left - 1, top - 1, left, bottom + 1, -1);
+        drawContext.fill(right, top - 1, right + 1, bottom + 1, -1);
+        drawContext.fill(left, top - 1, right, top, -1);
+        drawContext.fill(left, bottom, right, bottom + 1, -1);
     }
 
-    public void render(final MatrixStack matrices) {
-        DrawableHelper.fill(matrices, this.x, this.y, this.x + this.width, this.y + this.height, Color.BLACK.getRGB());
+    public void render(final DrawContext drawContext) {
+        drawContext.fill(this.x, this.y, this.x + this.width, this.y + this.height, Color.BLACK.getRGB());
 
         final String text = this.isOpen() ? "↓" : "←";
 
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, text, (this.x + this.width) - MinecraftClient.getInstance().textRenderer.getWidth(text), this.y + (this.height / 2F) - 4, -1);
-        drawRectBorder(matrices, this.x, this.y, this.x + this.width, this.y + this.height);
+        final var fontRenderer = MinecraftClient.getInstance().textRenderer;
+        drawContext.drawTextWithShadow(fontRenderer, text, (this.x + this.width) - fontRenderer.getWidth(text), this.y + (this.height / 2) - 4, -1);
+        drawRectBorder(drawContext, this.x, this.y, this.x + this.width, this.y + this.height);
 
-        drawCenteredTextWithShadow(matrices, MinecraftClient.getInstance().textRenderer, Text.literal(this.options.get(this.selected)), this.x + (this.width / 2), this.y + (this.height / 2) - 4, -1);
+        drawContext.drawCenteredTextWithShadow(fontRenderer, Text.literal(this.options.get(this.selected)), this.x + (this.width / 2), this.y + (this.height / 2) - 4, -1);
 
         if (this.isOpen()) {
-            DrawableHelper.fill(matrices, this.x, this.y + this.height, this.x + this.width, this.y + this.height + (this.options.size() * this.entryHeight), Color.BLACK.getRGB());
-            drawRectBorder(matrices, this.x, this.y + this.height + 1, this.x + this.width, this.y + this.height + (this.options.size() * this.entryHeight));
+            drawContext.fill(this.x, this.y + this.height, this.x + this.width, this.y + this.height + (this.options.size() * this.entryHeight), Color.BLACK.getRGB());
+            drawRectBorder(drawContext, this.x, this.y + this.height + 1, this.x + this.width, this.y + this.height + (this.options.size() * this.entryHeight));
 
             int bypass = this.height;
             for (String option : this.options) {
-                drawCenteredTextWithShadow(matrices, MinecraftClient.getInstance().textRenderer, Text.literal(option), this.x + this.width / 2, bypass + this.y + 1 + (this.entryHeight / 4), -1);
+                drawContext.drawCenteredTextWithShadow(MinecraftClient.getInstance().textRenderer, Text.literal(option), this.x + this.width / 2, bypass + this.y + 1 + (this.entryHeight / 4), -1);
                 bypass += this.entryHeight;
             }
         }

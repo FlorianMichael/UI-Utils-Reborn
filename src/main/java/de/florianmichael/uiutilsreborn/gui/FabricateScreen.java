@@ -24,6 +24,7 @@ import de.florianmichael.uiutilsreborn.widget.DropboxWidget;
 import de.florianmichael.uiutilsreborn.widget.ExploitButtonWidget;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -193,28 +194,30 @@ public class FabricateScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext drawContext, int mouseX, int mouseY, float delta) {
+        final var matrices = drawContext.getMatrices();
+
         matrices.push();
         matrices.translate(0, 0, -100);
-        this.parent.render(matrices, -1, -1, delta);
+        this.parent.render(drawContext, -1, -1, delta);
         matrices.pop();
 
         matrices.push();
         matrices.translate(0, 0, 900);
-        this.renderBackground(matrices);
+        this.renderBackground(drawContext);
 
         matrices.push();
         matrices.scale(2F, 2F, 2F);
-        drawCenteredTextWithShadow(matrices, textRenderer, Text.literal(this.currentPacket.getDisplay()).asOrderedText(), this.width / 4, 2, -1);
+        drawContext.drawCenteredTextWithShadow(textRenderer, Text.literal(this.currentPacket.getDisplay()).asOrderedText(), this.width / 4, 2, -1);
         matrices.pop();
 
         if (this.action != null)
-            this.action.render(matrices);
+            this.action.render(drawContext);
 
         if (this.status != null)
-            this.textRenderer.drawWithShadow(matrices, this.status, 0, 0, -1);
+            drawContext.drawTextWithShadow(textRenderer, this.status, 0, 0, -1);
 
-        super.render(matrices, mouseX, mouseY, delta);
+        super.render(drawContext, mouseX, mouseY, delta);
         matrices.pop();
     }
 

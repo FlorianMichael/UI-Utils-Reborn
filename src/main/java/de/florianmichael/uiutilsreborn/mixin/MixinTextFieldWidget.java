@@ -20,6 +20,7 @@ package de.florianmichael.uiutilsreborn.mixin;
 
 import de.florianmichael.uiutilsreborn.util.ITextFieldAdapter;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -44,9 +45,9 @@ public abstract class MixinTextFieldWidget extends ClickableWidget implements IT
     }
 
     @Inject(method = "renderButton", at = @At("RETURN"))
-    public void hookCustomSideInformation(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    public void hookCustomSideInformation(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.sideInformation != null)
-            this.textRenderer.drawWithShadow(matrices, this.sideInformation, this.getX() - textRenderer.getWidth(this.sideInformation.getString()) - 10, this.getY() + this.getHeight() / 4F, -1);
+            context.drawTextWithShadow(textRenderer, this.sideInformation, this.getX() - textRenderer.getWidth(this.sideInformation.getString()) - 10, this.getY() + this.getHeight() / 4, -1);
     }
 
     @Override
