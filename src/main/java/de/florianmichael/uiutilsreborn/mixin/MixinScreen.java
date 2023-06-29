@@ -19,7 +19,6 @@
 package de.florianmichael.uiutilsreborn.mixin;
 
 import de.florianmichael.uiutilsreborn.UIUtilsReborn;
-import de.florianmichael.uiutilsreborn.util.Side;
 import de.florianmichael.uiutilsreborn.widget.ExploitButtonWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
@@ -51,17 +50,13 @@ public abstract class MixinScreen {
 
         if (buttons.isEmpty()) return;
 
-        int leftHeight = 0;
-        int rightHeight = 0;
+        int buttonHeight = 0;
         for (ExploitButtonWidget next : buttons) {
-            next.setX(next.getSide() == Side.LEFT ? UIUtilsReborn.BOUND : this.width - next.getWidth() - UIUtilsReborn.BOUND);
-            next.setY(UIUtilsReborn.BOUND + (next.getSide() == Side.LEFT ? leftHeight : rightHeight));
+            next.setX(this.width - next.getWidth() - UIUtilsReborn.BOUND);
+            next.setY(UIUtilsReborn.BOUND + buttonHeight);
 
             this.addDrawableChild(next);
-            if (next.getSide() == Side.LEFT)
-                leftHeight += UIUtilsReborn.BUTTON_DIFF;
-            else
-                rightHeight += UIUtilsReborn.BUTTON_DIFF;
+            buttonHeight += UIUtilsReborn.BUTTON_DIFF;
         }
     }
 

@@ -15,7 +15,6 @@ Differences between the original and this one:
 - Better Design and Code-base
 - AntiRespawn Fix
 - Removed Restore Key and added new Button
-- Included [shulker-dupe](https://github.com/Coderx-Gamer/shulker-dupe) and [lectern-crash](https://github.com/Coderx-Gamer/lectern-crash)
 
 ## Tutorial
 You can type `$ui-utils-reborn` into the chat to disable/enable the GUI stuff
@@ -27,9 +26,7 @@ You can type `$ui-utils-reborn` into the chat to disable/enable the GUI stuff
 - **Delay Packets** if enabled, `ClickSlotC2SPacket` and `ButtonClickC2SPacket` packets will be stored until you disable the feature, then all packets will be sent
 - **Send and quit** will send all stored packets from **Delay Packets** sent and disconnect
 - **Save GUI** Saves your current Screen, you can re-open this save point with **Load saved GUI**
-- **Copy Sync-ID** Copies your current Screen Sync-ID (can be used for packet fabrication)
-- **Copy Revision** Copies your current Screen Revision (can be used for packet fabrication)
-- **Copy Title (Json)** Copies your current Screen Title in Json formatting (only native version)
+- **Copy Window Data** Copies your current Screen Sync-ID, Revision and Screen Title in Json formatting (can be used for packet fabrication)
 - **Fabricate packet** Allows you to send custom `ClickSlotC2SPacket` and `ButtonClickC2SPacket` packets
 
 ![](.github/images/main.png)

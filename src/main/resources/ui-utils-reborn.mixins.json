@@ -6,7 +6,6 @@
   "client": [
     "MixinChatScreen",
     "MixinClientConnection",
-    "MixinClientPlayerEntity",
     "MixinScreen",
     "MixinTextFieldWidget"
   ],

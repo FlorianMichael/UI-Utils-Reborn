@@ -42,7 +42,7 @@ import java.util.Arrays;
 public class FabricateScreen extends Screen {
 
     private final static int DEFAULT_WIDTH = 300;
-    private final static int DEFAULT_HEIGHT = 15;
+    private final static int DEFAULT_HEIGHT = 20;
 
     private final Screen parent;
     private CurrentPacket currentPacket = CurrentPacket.CLICK_SLOT;
@@ -106,7 +106,6 @@ public class FabricateScreen extends Screen {
                 }
 
                 client.getNetworkHandler().sendPacket(new ClickSlotC2SPacket(syncID, revision, slot, button, SlotActionType.values()[this.action.selected], ItemStack.EMPTY, new Int2ObjectArrayMap<>()));
-                this.status = Formatting.GREEN + Text.translatable("fabricate.ui-utils-reborn.success").getString();
             } else {
                 if (this.syncID.getText().trim().isEmpty() || this.buttonID.getText().trim().isEmpty()) {
                     this.status = Formatting.RED + Text.translatable("fabricate.ui-utils-reborn.invalid").getString();
@@ -122,8 +121,8 @@ public class FabricateScreen extends Screen {
                 }
 
                 client.getNetworkHandler().sendPacket(new ButtonClickC2SPacket(syncID, buttonID));
-                this.status = Formatting.GREEN + Text.translatable("fabricate.ui-utils-reborn.success").getString();
             }
+            this.status = Formatting.GREEN + Text.translatable("fabricate.ui-utils-reborn.success").getString();
         }).dimensions(this.width / 2 - (DEFAULT_WIDTH / 4), this.height - ExploitButtonWidget.DEFAULT_HEIGHT - UIUtilsReborn.BOUND, DEFAULT_WIDTH / 2, ExploitButtonWidget.DEFAULT_HEIGHT).build());
     }
 
