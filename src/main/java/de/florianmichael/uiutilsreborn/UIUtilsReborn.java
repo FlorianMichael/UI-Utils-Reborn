@@ -91,6 +91,10 @@ public class UIUtilsReborn implements ClientModInitializer {
             mc.player.requestRespawn();
             mc.setScreen(null);
         }));
+        hookFeature(DeathScreen.class, new ExploitButtonWidget(Text.translatable("gui.ui-utils-reborn.fake-respawn"), b -> {
+            mc.player.init();
+            mc.setScreen(null);
+        }));
 
         // Handled Screen Hooks
         final List<ExploitButtonWidget> exploits = new ArrayList<>();
