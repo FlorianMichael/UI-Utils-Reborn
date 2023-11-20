@@ -30,8 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientConnection.class)
 public class MixinClientConnection {
 
-    @Inject(method = "sendImmediately", at = @At("HEAD"), cancellable = true)
-    public void hookExploitCancels(Packet<?> packet, PacketCallbacks callbacks, CallbackInfo ci) {
+    @Inject(method = "sendInternal", at = @At("HEAD"), cancellable = true)
+    public void hookExploitCancels(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
         if (UIUtilsReborn.shouldCancel(packet)) ci.cancel();
     }
 }

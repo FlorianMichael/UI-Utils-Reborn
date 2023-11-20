@@ -203,7 +203,7 @@ public class FabricateScreen extends Screen {
 
         matrices.push();
         matrices.translate(0, 0, 900);
-        this.renderBackground(drawContext);
+        super.render(drawContext, mouseX, mouseY, delta);
 
         matrices.push();
         matrices.scale(2F, 2F, 2F);
@@ -215,8 +215,6 @@ public class FabricateScreen extends Screen {
 
         if (this.status != null)
             drawContext.drawTextWithShadow(textRenderer, this.status, 0, 0, -1);
-
-        super.render(drawContext, mouseX, mouseY, delta);
         matrices.pop();
     }
 
