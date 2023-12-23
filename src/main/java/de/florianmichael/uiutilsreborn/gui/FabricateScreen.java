@@ -28,7 +28,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ButtonClickC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
@@ -139,29 +138,29 @@ public class FabricateScreen extends Screen {
 
         this.syncID = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
         y += UIUtilsReborn.BUTTON_DIFF;
-        ((ITextFieldAdapter) this.syncID).setSideInformation("Sync ID");
+        ((ITextFieldAdapter) this.syncID).uiUtilsReborn$setSideInformation("Sync ID");
         this.addDrawableChild(this.syncID);
 
         if (this.currentPacket == CurrentPacket.CLICK_SLOT) {
             this.revision = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
             y += UIUtilsReborn.BUTTON_DIFF;
-            ((ITextFieldAdapter) this.revision).setSideInformation("Revision");
+            ((ITextFieldAdapter) this.revision).uiUtilsReborn$setSideInformation("Revision");
             this.addDrawableChild(this.revision);
 
             this.slot = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
             y += UIUtilsReborn.BUTTON_DIFF;
-            ((ITextFieldAdapter) this.slot).setSideInformation("Slot");
+            ((ITextFieldAdapter) this.slot).uiUtilsReborn$setSideInformation("Slot");
             this.addDrawableChild(this.slot);
 
             this.button = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
             y += UIUtilsReborn.BUTTON_DIFF;
-            ((ITextFieldAdapter) this.button).setSideInformation("Button");
+            ((ITextFieldAdapter) this.button).uiUtilsReborn$setSideInformation("Button");
             this.addDrawableChild(this.button);
 
             this.action = new DropboxWidget(startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_HEIGHT, 0, Arrays.stream(SlotActionType.values()).map(Enum::name).toList());
         } else {
             this.buttonID = new TextFieldWidget(textRenderer, startX, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, Text.empty());
-            ((ITextFieldAdapter) this.buttonID).setSideInformation("Button ID");
+            ((ITextFieldAdapter) this.buttonID).uiUtilsReborn$setSideInformation("Button ID");
             this.addDrawableChild(this.buttonID);
 
             this.action = null;

@@ -149,7 +149,7 @@ public class UIUtilsReborn implements ClientModInitializer {
         exploits.add(new ExploitButtonWidget(Text.translatable("gui.ui-utils-reborn.copy"), b -> {
             assert mc.player != null;
 
-            mc.keyboard.setClipboard("SyncID: " + mc.player.currentScreenHandler.syncId + ", Revision: " + mc.player.currentScreenHandler.getRevision() + ", Title: " + Text.Serializer.toJson(mc.currentScreen.getTitle()));
+            mc.keyboard.setClipboard("SyncID: " + mc.player.currentScreenHandler.syncId + ", Revision: " + mc.player.currentScreenHandler.getRevision() + ", Title: " + Text.Serialization.toJsonString(mc.currentScreen.getTitle()));
         }));
 
         // Packet Fabrication

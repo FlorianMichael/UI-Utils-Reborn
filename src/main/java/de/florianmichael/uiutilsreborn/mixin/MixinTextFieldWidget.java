@@ -23,7 +23,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,21 +36,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinTextFieldWidget extends ClickableWidget implements ITextFieldAdapter {
 
     @Shadow @Final private TextRenderer textRenderer;
+
     @Unique
-    private Text sideInformation;
+    private Text uiUtilsReborn$sideInformation;
 
     public MixinTextFieldWidget(int x, int y, int width, int height, Text message) {
         super(x, y, width, height, message);
     }
 
-    @Inject(method = "renderButton", at = @At("RETURN"))
+    @Inject(method = "renderWidget", at = @At("RETURN"))
     public void hookCustomSideInformation(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (this.sideInformation != null)
-            context.drawTextWithShadow(textRenderer, this.sideInformation, this.getX() - textRenderer.getWidth(this.sideInformation.getString()) - 10, this.getY() + this.getHeight() / 4, -1);
+        if (this.uiUtilsReborn$sideInformation != null) {
+            context.drawTextWithShadow(textRenderer, this.uiUtilsReborn$sideInformation, this.getX() - textRenderer.getWidth(this.uiUtilsReborn$sideInformation.getString()) - 10, this.getY() + this.getHeight() / 4, -1);
+        }
     }
 
     @Override
-    public void setSideInformation(String information) {
-        this.sideInformation = Text.literal(information);
+    public void uiUtilsReborn$setSideInformation(String information) {
+        this.uiUtilsReborn$sideInformation = Text.literal(information);
     }
 }
