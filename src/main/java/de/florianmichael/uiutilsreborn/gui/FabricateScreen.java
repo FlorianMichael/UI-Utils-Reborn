@@ -1,6 +1,6 @@
 /*
  * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
- * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2022-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -231,4 +231,5 @@ public class FabricateScreen extends Screen {
             return display;
         }
     }
+
 }

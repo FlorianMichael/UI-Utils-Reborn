@@ -1,6 +1,6 @@
 /*
  * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
- * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2022-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public abstract class MixinScreen {
     @Shadow public abstract List<? extends Element> children();
 
     @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;II)V", at = @At("RETURN"))
-    public void hookFeatureButtons(MinecraftClient client, int width, int height, CallbackInfo ci) {
+    private void hookFeatureButtons(MinecraftClient client, int width, int height, CallbackInfo ci) {
         if (!UIUtilsReborn.isEnabled()) return;
 
         final List<ExploitButtonWidget> buttons = UIUtilsReborn.fromScreen((Screen) (Object) this);
@@ -61,7 +61,7 @@ public abstract class MixinScreen {
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
-    public void hideFeatureButtons(CallbackInfo ci) {
+    private void hideFeatureButtons(CallbackInfo ci) {
         if (UIUtilsReborn.isEnabled()) return;
 
         for (Element child : children()) {
@@ -70,4 +70,5 @@ public abstract class MixinScreen {
             }
         }
     }
+
 }

@@ -1,6 +1,6 @@
 /*
  * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
- * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2022-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public abstract class MixinTextFieldWidget extends ClickableWidget implements IT
     }
 
     @Inject(method = "renderWidget", at = @At("RETURN"))
-    public void hookCustomSideInformation(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    private void hookCustomSideInformation(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (this.uiUtilsReborn$sideInformation != null) {
             context.drawTextWithShadow(textRenderer, this.uiUtilsReborn$sideInformation, this.getX() - textRenderer.getWidth(this.uiUtilsReborn$sideInformation.getString()) - 10, this.getY() + this.getHeight() / 4, -1);
         }
@@ -55,4 +55,5 @@ public abstract class MixinTextFieldWidget extends ClickableWidget implements IT
     public void uiUtilsReborn$setSideInformation(String information) {
         this.uiUtilsReborn$sideInformation = Text.literal(information);
     }
+
 }

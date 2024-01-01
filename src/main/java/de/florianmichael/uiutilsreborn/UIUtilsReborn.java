@@ -1,6 +1,6 @@
 /*
  * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
- * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2022-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ import net.minecraft.util.Pair;
 import java.util.*;
 
 public class UIUtilsReborn implements ClientModInitializer {
+
     private static boolean enabled = true;
 
     public final static int BOUND = 5;
@@ -192,4 +193,5 @@ public class UIUtilsReborn implements ClientModInitializer {
     public void hookFeature(final Class<? extends Screen> screenClass, final List<ExploitButtonWidget> buttons) {
         buttons.forEach(buttonWidget -> exploitTracker.add(new Pair<>(buttonWidget, screenClass)));
     }
+
 }

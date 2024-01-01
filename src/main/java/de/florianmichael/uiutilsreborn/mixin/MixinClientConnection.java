@@ -1,6 +1,6 @@
 /*
  * This file is part of UI-Utils-Reborn - https://github.com/FlorianMichael/UI-Utils-Reborn
- * Copyright (C) 2022-2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2022-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientConnection.class)
-public class MixinClientConnection {
+public abstract class MixinClientConnection {
 
     @Inject(method = "sendInternal", at = @At("HEAD"), cancellable = true)
-    public void hookExploitCancels(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
+    private void hookExploitCancels(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
         if (UIUtilsReborn.shouldCancel(packet)) ci.cancel();
     }
+
 }
