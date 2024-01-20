@@ -41,11 +41,11 @@ public class UIUtilsReborn implements ClientModInitializer {
 
     private static boolean enabled = true;
 
-    public final static int BOUND = 5;
-    public final static int BUTTON_DIFF = ExploitButtonWidget.DEFAULT_HEIGHT + 3;
+    public static final int BOUND = 5;
+    public static final int BUTTON_DIFF = ExploitButtonWidget.DEFAULT_HEIGHT + 3;
 
-    private final static List<Pair<ExploitButtonWidget, Class<? extends  Screen>>> exploitTracker = new ArrayList<>();
-    private final static List<Packet<?>> delayedUIPackets = new ArrayList<>();
+    private static final List<Pair<ExploitButtonWidget, Class<? extends  Screen>>> exploitTracker = new ArrayList<>();
+    private static final List<Packet<?>> delayedUIPackets = new ArrayList<>();
 
     private static boolean cancelSignPackets;
 

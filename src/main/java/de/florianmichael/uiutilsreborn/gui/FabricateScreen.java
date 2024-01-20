@@ -40,8 +40,8 @@ import java.util.Arrays;
 
 public class FabricateScreen extends Screen {
 
-    private final static int DEFAULT_WIDTH = 300;
-    private final static int DEFAULT_HEIGHT = 20;
+    private static final int DEFAULT_WIDTH = 300;
+    private static final int DEFAULT_HEIGHT = 20;
 
     private final Screen parent;
     private CurrentPacket currentPacket = CurrentPacket.CLICK_SLOT;
@@ -218,6 +218,7 @@ public class FabricateScreen extends Screen {
     }
 
     public enum CurrentPacket {
+
         CLICK_SLOT("Click Slot"),
         BUTTON_CLICK("Button Click");
 
@@ -230,6 +231,7 @@ public class FabricateScreen extends Screen {
         public String getDisplay() {
             return display;
         }
+
     }
 
 }
